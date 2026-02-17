@@ -132,33 +132,37 @@ btnCalcular.addEventListener('click', function () {
   let liquido = 0;
 
 
-  // =============================
-  // GASTOS ADMINISTRATIVOS
-  // =============================
-  if (tipo === 'microcredito') {
-    gastosAdmin = monto * 0.01;
-  } 
-  else if (tipo === 'automatico') {
-    gastosAdmin = monto * 0.009;
-  } 
-  else {
+// =============================
+// GASTOS ADMINISTRATIVOS
+// =============================
+if (tipo === 'microcredito') {
+  gastosAdmin = monto * 0.01;
+} 
+else if (tipo === 'automatico') {
+  gastosAdmin = monto * 0.009;
+} 
+else {
 
-    if (monto >= 1000 && monto <= 200000) {
-      gastosAdmin = monto * 0.015;
-    } 
-    else if (monto > 200000 && monto <= 400000) {
-      gastosAdmin = (monto * 0.004) + (200000 * 0.011);
-    } 
-    else if (monto > 400000 && monto <= 600000) {
-      gastosAdmin = (monto * 0.0035) + (200000 * 0.0115);
-    } 
-    else if (monto > 600000 && monto <= 1000000) {
-      gastosAdmin = (monto * 0.0030) + (200000 * 0.012);
-    } 
-    else if (monto > 1000000) {
-      gastosAdmin = ((monto - 1000000) / 1000) + 3000;
-    }
+  if (monto >= 1000 && monto <= 200000) {
+    gastosAdmin = monto * 0.015;
+  } 
+  else if (monto > 200000 && monto <= 400000) {
+    gastosAdmin = (monto * 0.004) + (200000 * 0.011);
+  } 
+  else if (monto > 400000 && monto <= 600000) {
+    gastosAdmin = (monto * 0.0035) + (200000 * 0.0115);
+  } 
+  else if (monto > 600000 && monto < 1000000) { 
+    gastosAdmin = (monto * 0.0030) + (200000 * 0.012);
+  } 
+  else if (monto === 1000000) { 
+    gastosAdmin = 3000;
   }
+  else if (monto > 1000000) {
+    gastosAdmin = ((monto - 1000000) / 1000) + 3000;
+  }
+}
+
 
 
   // =============================
@@ -314,3 +318,4 @@ btnCalcular.addEventListener('click', function () {
 btnImprimir.addEventListener('click', function () {
   window.print();
 });
+
