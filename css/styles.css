@@ -1,0 +1,271 @@
+/* =============================
+   RESET GENERAL
+============================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f4f6f9;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =============================
+   HEADER
+============================= */
+
+.topbar {
+  background: #0c2d57;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+.status {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: #00ff88;
+  border-radius: 50%;
+}
+
+/* =============================
+   CONTENEDOR PRINCIPAL
+============================= */
+
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  padding: 40px 20px;
+  gap: 25px; /* espacio entre cards */
+}
+
+
+/* =============================
+   CARD
+============================= */
+
+.card {
+  background: white;
+  width: 100%;
+  max-width: 420px;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.icon-box {
+  background: #e6efff;
+  color: #0c2d57;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 18px;
+}
+
+.card-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.card-header p {
+  font-size: 13px;
+  color: #777;
+}
+
+/* =============================
+   FORMULARIOS
+============================= */
+
+.form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+input,
+select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #dcdcdc;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #0c2d57;
+}
+
+/* =============================
+   BOTONES
+============================= */
+
+.btn-primary {
+  background: #ff7a00;
+  color: white;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background: #e56d00;
+}
+
+.btn-secondary {
+  background: white;
+  color: #0c2d57;
+  border: 2px solid #0c2d57;
+  padding: 12px;
+  width: 100%;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.btn-secondary:hover {
+  background: #0c2d57;
+  color: white;
+}
+
+/* =============================
+   RESULTADOS
+============================= */
+
+.result-card {
+  margin-top: 30px;
+  background: white;
+  max-width: 420px;
+  width: 100%;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.total {
+  margin-top: 15px;
+  font-weight: 700;
+  font-size: 16px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+/* =============================
+   FOOTER
+============================= */
+
+.footer {
+  background: #0c2d57;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: center;
+  padding: 20px 15px;
+  font-size: 12.5px;
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-content {
+  max-width: 1100px;
+  margin: auto;
+}
+
+.footer-main {
+  font-weight: 500;
+  font-size: 13px;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.footer-secondary {
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  line-height: 1.6;
+}
+
+.footer-icon {
+  margin-right: 6px;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+
+/* =============================
+   UTILIDADES
+============================= */
+
+.hidden {
+  display: none;
+}
+
+/* =============================
+   RESPONSIVE
+============================= */
+
+@media (max-width: 480px) {
+  .card {
+    padding: 20px;
+  }
+
+  .result-card {
+    padding: 20px;
+  }
+
+  .topbar {
+    padding: 12px 15px;
+  }
+}

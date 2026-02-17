@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Gastos</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <!-- =============================
+       HEADER
+  ============================== -->
+  <header class="topbar">
+    <div class="logo">COLUA</div>
+    <div class="status">
+      <span class="dot"></span>
+      Sistema Activo
+    </div>
+  </header>
+
+
+  <!-- =============================
+       CONTENEDOR PRINCIPAL
+  ============================== -->
+  <div class="container">
+
+    <div class="card">
+
+      <div class="card-header">
+        <div class="icon-box">
+          <i class="fas fa-calculator"></i>
+        </div>
+        <div>
+          <h2>Calculadora de Gastos</h2>
+          <p>Calcula los gastos de tu crédito</p>
+        </div>
+      </div>
+
+
+      <!-- =============================
+           MONTO
+      ============================== -->
+      <div class="form-group">
+        <label>
+          Q. Monto del Crédito
+        </label>
+        <input 
+          type="text" 
+          id="monto" 
+          placeholder="Q 0.00" 
+          autocomplete="off"
+        >
+      </div>
+
+
+      <!-- =============================
+           TIPO DE CRÉDITO
+      ============================== -->
+      <div class="form-group">
+        <label>
+          <i class="fas fa-file-invoice"></i> Tipo de Crédito
+        </label>
+        <select id="tipoCredito">
+          <option value="">Seleccione</option>
+          <option value="fiduciario">Fiduciario</option>
+          <option value="hipotecario">Hipotecario</option>
+          <option value="automatico">Automático</option>
+          <option value="microcredito">MicroCrédito</option>
+        </select>
+      </div>
+
+
+      <!-- =============================
+           ESCRITURA (SOLO HIPOTECARIO)
+      ============================== -->
+      <div id="opcionesEscritura" class="form-group hidden">
+        <label>Tipo de Escritura</label>
+        <select id="tipoEscritura">
+          <option value="">Seleccione</option>
+          <option value="registrada">Escritura Registrada</option>
+          <option value="publica">Escritura Pública</option>
+        </select>
+      </div>
+
+
+      <!-- =============================
+           UBICACIÓN AVALÚO (>400,000)
+      ============================== -->
+      <div id="ubicacionAvaluoContainer" class="form-group hidden">
+        <label>
+          ¿El avalúo se encuentra en el departamento de Sololá?
+        </label>
+        <select id="ubicacionAvaluo">
+          <option value="">Seleccione</option>
+          <option value="solola">Sí, en Sololá (Q 1,000.00)</option>
+          <option value="fuera">No, fuera de Sololá (Q 1,500.00)</option>
+        </select>
+      </div>
+
+
+      <!-- =============================
+           BOTONES
+      ============================== -->
+      <button id="btnCalcular" class="btn-primary">
+        <i class="fas fa-calculator"></i> Calcular Gastos
+      </button>
+
+      <button id="btnImprimir" class="btn-secondary">
+        <i class="fas fa-print"></i> Imprimir
+      </button>
+
+    </div>
+
+
+    <!-- =============================
+         RESULTADOS
+    ============================== -->
+    <div id="resultado" class="result-card hidden"></div>
+
+  </div>
+
+
+  <!-- =============================
+       SCRIPTS
+  ============================== -->
+  <script src="js/app.js"></script>
+<!-- =============================
+     FOOTER I
+============================== -->
+<footer class="footer">
+  <div class="footer-content">
+    <p class="footer-main">
+      Sistema Interno de Cálculo de Gastos v1.0
+    </p>
+    <p class="footer-secondary">
+      © <span id="anioActual"></span> COLUA · 
+     Desarrollado por Manuel Adrián Chet Samayoa · 
+      Gastos generados según políticas vigentes
+    </p>
+  </div>
+</footer>
+
+
+
+
+</body>
+</html>
