@@ -307,6 +307,28 @@ select {
 }
 
 /* =============================
+   INFO BOX (Solo lectura)
+============================= */
+
+.info-box {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border: 2px solid #3b82f6;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #1e40af;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.info-box i {
+  font-size: 16px;
+  color: #3b82f6;
+}
+
+/* =============================
    BOTONES
 ============================= */
 

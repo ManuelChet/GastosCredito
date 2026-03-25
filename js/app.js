@@ -3,21 +3,21 @@
 // =============================
 const inputMonto = document.getElementById('monto');
 const tipoGarantia = document.getElementById('tipoGarantia');
-const tipoEscritura = document.getElementById('tipoEscritura');
-const opcionesEscritura = document.getElementById('opcionesEscritura');
-const cantidadEscriturasHipotecarioContainer = document.getElementById('cantidadEscriturasHipotecarioContainer');
-const cantidadEscriturasHipotecario = document.getElementById('cantidadEscriturasHipotecario');
 const resultadoDiv = document.getElementById('resultado');
 const btnCalcular = document.getElementById('btnCalcular');
 const btnImprimir = document.getElementById('btnImprimir');
 const btnLimpiar = document.getElementById('btnLimpiar');
-const ubicacionAvaluoContainer = document.getElementById('ubicacionAvaluoContainer');
-const ubicacionAvaluo = document.getElementById('ubicacionAvaluo');
 const alertContainer = document.getElementById('alertContainer');
 
+// Hipotecario
+const infoEscrituraHipotecario = document.getElementById('infoEscrituraHipotecario');
+const cantidadEscriturasHipotecarioContainer = document.getElementById('cantidadEscriturasHipotecarioContainer');
+const cantidadEscriturasHipotecario = document.getElementById('cantidadEscriturasHipotecario');
+const ubicacionAvaluoContainer = document.getElementById('ubicacionAvaluoContainer');
+const ubicacionAvaluo = document.getElementById('ubicacionAvaluo');
+
 // Derechos Posesorios
-const opcionesEscrituraDP = document.getElementById('opcionesEscrituraDP');
-const tipoEscrituraDP = document.getElementById('tipoEscrituraDP');
+const infoEscrituraDP = document.getElementById('infoEscrituraDP');
 const cantidadEscriturasContainer = document.getElementById('cantidadEscriturasContainer');
 const cantidadEscrituras = document.getElementById('cantidadEscrituras');
 const ubicacionDPContainer = document.getElementById('ubicacionDPContainer');
@@ -122,18 +122,19 @@ inputMonto.addEventListener('focus', function (e) {
 // OCULTAR TODOS LOS CAMPOS CONDICIONALES
 // =============================
 function ocultarCamposCondicionales() {
-  opcionesEscritura.classList.add('hidden');
+  // Hipotecario
+  infoEscrituraHipotecario.classList.add('hidden');
   cantidadEscriturasHipotecarioContainer.classList.add('hidden');
   ubicacionAvaluoContainer.classList.add('hidden');
-  opcionesEscrituraDP.classList.add('hidden');
+  
+  // Derechos Posesorios
+  infoEscrituraDP.classList.add('hidden');
   cantidadEscriturasContainer.classList.add('hidden');
   ubicacionDPContainer.classList.add('hidden');
   
   // Limpiar valores
-  tipoEscritura.value = '';
   cantidadEscriturasHipotecario.value = '';
   ubicacionAvaluo.value = '';
-  tipoEscrituraDP.value = '';
   cantidadEscrituras.value = '';
   ubicacionDP.value = '';
 }
@@ -149,21 +150,23 @@ function validarCamposCondicionales() {
 
   ocultarCamposCondicionales();
 
-  // Hipotecario
+  // Hipotecario - Siempre es Escritura Registrada
   if (tipo === 'hipotecario') {
-    opcionesEscritura.classList.remove('hidden');
+    infoEscrituraHipotecario.classList.remove('hidden');
     cantidadEscriturasHipotecarioContainer.classList.remove('hidden');
     
+    // Mostrar ubicacion avaluo para montos mayores a Q400,000
     if (monto > 400000) {
       ubicacionAvaluoContainer.classList.remove('hidden');
     }
   }
 
-  // Derechos Posesorios
+  // Derechos Posesorios - Siempre es Escritura Publica
   if (tipo === 'derechos_posesorios') {
-    opcionesEscrituraDP.classList.remove('hidden');
+    infoEscrituraDP.classList.remove('hidden');
     cantidadEscriturasContainer.classList.remove('hidden');
     
+    // Mostrar ubicacion para montos mayores a Q500,000
     if (monto > 500000) {
       ubicacionDPContainer.classList.remove('hidden');
     }
@@ -200,19 +203,17 @@ btnCalcular.addEventListener('click', function () {
 
   const monto = parseFloat(montoTexto);
   const tipo = tipoGarantia.value;
-  const escritura = tipoEscritura.value;
-  const escrituraDP = tipoEscrituraDP.value;
   const numEscrituras = parseInt(cantidadEscrituras.value) || 1;
   const numEscriturasHipotecario = parseInt(cantidadEscriturasHipotecario.value) || 1;
 
-  // Validación básica
+  // Validacion basica
   if (!monto || monto <= 0) {
-    mostrarAlerta('error', 'Error de validación', 'Por favor ingrese un monto válido mayor a cero.');
+    mostrarAlerta('error', 'Error de validacion', 'Por favor ingrese un monto valido mayor a cero.');
     return;
   }
 
   if (!tipo) {
-    mostrarAlerta('error', 'Error de validación', 'Por favor seleccione un tipo de garantía.');
+    mostrarAlerta('error', 'Error de validacion', 'Por favor seleccione un tipo de garantia.');
     return;
   }
 
@@ -221,7 +222,7 @@ btnCalcular.addEventListener('click', function () {
   // =============================
   if (tipo === 'microcredito') {
     if (monto < 1000 || monto > 30000) {
-      mostrarAlerta('warning', 'Monto fuera de rango', 'Según políticas vigentes, el Microcrédito solo permite montos de Q 1,000.00 a Q 30,000.00.');
+      mostrarAlerta('warning', 'Monto fuera de rango', 'Segun politicas vigentes, el Microcredito solo permite montos de Q 1,000.00 a Q 30,000.00.');
       return;
     }
   }
@@ -238,7 +239,8 @@ btnCalcular.addEventListener('click', function () {
   // =============================
   // GASTOS ADMINISTRATIVOS
   // =============================
-  if (tipo === 'microcredito') {
+  // Microcredito y Credito con Seguro Columna usan los mismos calculos
+  if (tipo === 'microcredito' || tipo === 'credito_seguro_columna') {
     gastosAdmin = monto * 0.01;
   } 
   else if (tipo === 'automatico') {
@@ -275,25 +277,21 @@ btnCalcular.addEventListener('click', function () {
 
 
   // =============================
-  // HIPOTECARIO
+  // HIPOTECARIO (Siempre Escritura Registrada)
   // =============================
   if (tipo === 'hipotecario') {
 
-    if (!escritura) {
-      mostrarAlerta('error', 'Error de validación', 'Por favor seleccione el tipo de escritura.');
-      return;
-    }
-
     if (!cantidadEscriturasHipotecario.value || numEscriturasHipotecario < 1) {
-      mostrarAlerta('error', 'Error de validación', 'Por favor ingrese la cantidad de escrituras utilizadas.');
+      mostrarAlerta('error', 'Error de validacion', 'Por favor ingrese la cantidad de escrituras utilizadas.');
       return;
     }
 
     pignoracion = monto * 0.01;
+    infoAdicional.push(`Tipo escritura: Registrada`);
     infoAdicional.push(`Escrituras utilizadas: ${numEscriturasHipotecario}`);
 
     // =============================
-    // AVALÚO
+    // AVALÚO HIPOTECARIO
     // =============================
     if (monto >= 1000 && monto <= 50000) {
       avaluo = 150;
@@ -308,58 +306,58 @@ btnCalcular.addEventListener('click', function () {
       avaluo = 500;
     } 
     else {
+      // Mayor a Q400,000 - Se cobra por cada escritura segun ubicacion
       if (!ubicacionAvaluo.value) {
-        mostrarAlerta('error', 'Error de validación', 'Por favor seleccione si el avalúo se encuentra en Sololá o fuera.');
+        mostrarAlerta('error', 'Error de validacion', 'Para creditos mayores a Q 400,000.00, debe seleccionar la ubicacion del avaluo.');
         return;
       }
 
       if (ubicacionAvaluo.value === 'solola') {
-        avaluo = 1000;
-        infoAdicional.push('Ubicación avalúo: Sololá');
+        // Q1,000 por cada escritura en Solola
+        avaluo = 1000 * numEscriturasHipotecario;
+        infoAdicional.push(`Ubicacion avaluo: Solola (Q 1,000.00 x ${numEscriturasHipotecario} escritura${numEscriturasHipotecario > 1 ? 's' : ''} = Q ${formatoQuetzales(avaluo)})`);
       } else {
-        avaluo = 1500;
-        infoAdicional.push('Ubicación avalúo: Fuera de Sololá');
+        // Q1,500 por cada escritura fuera de Solola
+        avaluo = 1500 * numEscriturasHipotecario;
+        infoAdicional.push(`Ubicacion avaluo: Fuera de Solola (Q 1,500.00 x ${numEscriturasHipotecario} escritura${numEscriturasHipotecario > 1 ? 's' : ''} = Q ${formatoQuetzales(avaluo)})`);
       }
     }
 
     // =============================
-    // HIPOTECA
+    // HIPOTECA (Escritura Registrada)
+    // Con Q50 adicionales por cada escritura extra
     // =============================
-    if (escritura === 'registrada') {
-      if (monto <= 10000) {
-        hipoteca = 360;
-      } else {
-        hipoteca = 360 + ((monto - 10000) * 0.0015);
-      }
-      infoAdicional.push('Tipo escritura: Registrada');
-    } 
-    else {
-      hipoteca = 0;
-      infoAdicional.push('Tipo escritura: Pública');
+    if (monto <= 10000) {
+      hipoteca = 360;
+    } else {
+      hipoteca = 360 + ((monto - 10000) * 0.0015);
+    }
+    
+    // Agregar Q50 por cada escritura adicional (mas de 1)
+    if (numEscriturasHipotecario > 1) {
+      const escriturasAdicionales = numEscriturasHipotecario - 1;
+      const cargoAdicional = escriturasAdicionales * 50;
+      hipoteca += cargoAdicional;
+      infoAdicional.push(`Cargo adicional hipoteca: Q 50.00 x ${escriturasAdicionales} escritura${escriturasAdicionales > 1 ? 's' : ''} adicional${escriturasAdicionales > 1 ? 'es' : ''} = Q ${formatoQuetzales(cargoAdicional)}`);
     }
   }
 
 
   // =============================
-  // DERECHOS POSESORIOS
+  // DERECHOS POSESORIOS (Siempre Escritura Publica)
   // =============================
   if (tipo === 'derechos_posesorios') {
 
-    if (!escrituraDP) {
-      mostrarAlerta('error', 'Error de validación', 'Por favor seleccione el tipo de escritura.');
-      return;
-    }
-
     if (!cantidadEscrituras.value || numEscrituras < 1) {
-      mostrarAlerta('error', 'Error de validación', 'Por favor ingrese la cantidad de escrituras utilizadas.');
+      mostrarAlerta('error', 'Error de validacion', 'Por favor ingrese la cantidad de escrituras utilizadas.');
       return;
     }
 
     pignoracion = monto * 0.01;
+    infoAdicional.push(`Tipo escritura: Publica`);
     infoAdicional.push(`Escrituras utilizadas: ${numEscrituras}`);
-    infoAdicional.push(`Tipo escritura: ${escrituraDP === 'registrada' ? 'Registrada' : 'Pública'}`);
 
-    // Avalúo según monto
+    // Avaluo segun monto
     if (monto >= 1000 && monto <= 50000) {
       avaluo = 150;
     } 
@@ -376,29 +374,23 @@ btnCalcular.addEventListener('click', function () {
       avaluo = 1000;
     }
     else {
-      // Mayor a 500,000
+      // Mayor a Q500,000
       if (!ubicacionDP.value) {
-        mostrarAlerta('error', 'Error de validación', 'Para créditos mayores a Q 500,000.00, debe seleccionar si está en Sololá o fuera.');
+        mostrarAlerta('error', 'Error de validacion', 'Para creditos mayores a Q 500,000.00, debe seleccionar si esta en Solola o fuera.');
         return;
       }
 
       if (ubicacionDP.value === 'solola') {
         avaluo = 1000;
-        infoAdicional.push('Ubicación: Departamento de Sololá');
+        infoAdicional.push('Ubicacion: Departamento de Solola');
       } else {
         avaluo = 1500;
-        infoAdicional.push('Ubicación: Fuera de Sololá');
+        infoAdicional.push('Ubicacion: Fuera de Solola');
       }
     }
 
-    // Hipoteca para derechos posesorios
-    if (escrituraDP === 'registrada') {
-      if (monto <= 10000) {
-        hipoteca = 360;
-      } else {
-        hipoteca = 360 + ((monto - 10000) * 0.0015);
-      }
-    }
+    // Derechos Posesorios = Escritura Publica = NO cobra hipoteca
+    hipoteca = 0;
   }
 
 
@@ -419,7 +411,7 @@ btnCalcular.addEventListener('click', function () {
 
 
   // =============================
-  // CRÉDITO CON SEGURO COLUMNA
+  // CRÉDITO CON SEGURO COLUMNA (mismos calculos que Microcredito)
   // =============================
   if (tipo === 'credito_seguro_columna') {
     pignoracion = monto * 0.01;
@@ -438,29 +430,29 @@ btnCalcular.addEventListener('click', function () {
   // =============================
   const nombreGarantia = {
     'fiduciario': 'Fiduciario',
-    'automatico': 'Automático',
+    'automatico': 'Automatico',
     'hipotecario': 'Hipotecario',
     'derechos_posesorios': 'Derechos Posesorios',
     'fondo_retiro': 'Fondo de Retiro',
-    'credito_seguro_columna': 'Crédito con Seguro Columna',
-    'microcredito': 'Microcrédito'
+    'credito_seguro_columna': 'Credito con Seguro Columna',
+    'microcredito': 'Microcredito'
   };
 
   let resultadoHTML = `
     <div class="print-header">
-      <h1>COLUA - Cálculo de Gastos de Crédito</h1>
+      <h1>COLUA - Calculo de Gastos de Credito</h1>
       <p>Fecha: ${new Date().toLocaleDateString('es-GT')} | Tipo: ${nombreGarantia[tipo]}</p>
     </div>
 
     <h3>Desglose de Gastos</h3>
 
     <div class="result-item">
-      <span>Monto del Crédito</span>
+      <span>Monto del Credito</span>
       <strong>Q ${formatoQuetzales(monto)}</strong>
     </div>
 
     <div class="result-item">
-      <span>Tipo de Garantía</span>
+      <span>Tipo de Garantia</span>
       <strong>${nombreGarantia[tipo]}</strong>
     </div>
 
@@ -470,11 +462,11 @@ btnCalcular.addEventListener('click', function () {
     </div>
   `;
 
-  if (tipo === 'microcredito') {
+  if (tipo === 'microcredito' || tipo === 'credito_seguro_columna') {
     resultadoHTML += `
       <div class="result-item">
         <span>Seguro</span>
-        <strong>Monto variable según cantidad</strong>
+        <strong>Monto variable segun cantidad</strong>
       </div>
     `;
   }
@@ -482,7 +474,7 @@ btnCalcular.addEventListener('click', function () {
   if (tipo === 'fiduciario' || tipo === 'fondo_retiro' || tipo === 'credito_seguro_columna') {
     resultadoHTML += `
       <div class="result-item">
-        <span>Pignoración de Ahorro</span>
+        <span>Pignoracion de Ahorro</span>
         <strong>Q ${formatoQuetzales(pignoracion)}</strong>
       </div>
     `;
@@ -491,12 +483,12 @@ btnCalcular.addEventListener('click', function () {
   if (tipo === 'hipotecario' || tipo === 'derechos_posesorios') {
     resultadoHTML += `
       <div class="result-item">
-        <span>Pignoración</span>
+        <span>Pignoracion</span>
         <strong>Q ${formatoQuetzales(pignoracion)}</strong>
       </div>
 
       <div class="result-item">
-        <span>Avalúo</span>
+        <span>Avaluo</span>
         <strong>Q ${formatoQuetzales(avaluo)}</strong>
       </div>
 
@@ -516,12 +508,12 @@ btnCalcular.addEventListener('click', function () {
     </div>
 
     <div class="liquido">
-      <span>Líquido a Recibir</span>
+      <span>Liquido a Recibir</span>
       <strong>Q ${formatoQuetzales(liquido)}</strong>
     </div>
   `;
 
-  // Información adicional
+  // Informacion adicional
   if (infoAdicional.length > 0) {
     resultadoHTML += `
       <div class="info-adicional">
@@ -532,8 +524,8 @@ btnCalcular.addEventListener('click', function () {
 
   resultadoHTML += `
     <div class="print-footer">
-      <p>Documento generado por el Sistema de Cálculo de Gastos COLUA v2.0</p>
-      <p>Los gastos están sujetos a las políticas vigentes de la institución.</p>
+      <p>Documento generado por el Sistema de Calculo de Gastos COLUA v2.0</p>
+      <p>Los gastos estan sujetos a las politicas vigentes de la institucion.</p>
     </div>
   `;
 
@@ -543,8 +535,8 @@ btnCalcular.addEventListener('click', function () {
   // Scroll suave al resultado
   resultadoDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  // Alerta de éxito
-  mostrarAlerta('success', 'Cálculo generado', `Se han calculado los gastos para un crédito de Q ${formatoQuetzales(monto)} con garantía ${nombreGarantia[tipo]}.`);
+  // Alerta de exito
+  mostrarAlerta('success', 'Calculo generado', `Se han calculado los gastos para un credito de Q ${formatoQuetzales(monto)} con garantia ${nombreGarantia[tipo]}.`);
 
 });
 
